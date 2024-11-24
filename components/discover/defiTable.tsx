@@ -37,6 +37,7 @@ import DefiTableSkeleton from "./defiTableSkeleton";
 import ClaimModal from "./claimModal";
 import SuccessModal from "./successModal";
 import { useAccount } from "@starknet-react/core";
+import DefiOpportunityCardComponent from "./defiOpportunityCard";
 
 type DataTableProps = {
   data: TableInfo[];
@@ -411,6 +412,48 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
               </Typography>
             </div>
           </div>
+        </div>
+
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch py-16">
+          <DefiOpportunityCardComponent
+            tokenPair="STRK-ETH"
+            type="Liquidity Pool"
+            apr={69.49}
+            tvl={1.62}
+            dailyRewards={330}
+            protocol={{
+              name: "Ekubo",
+              icon: "/icons/ekubo.svg",
+            }}
+            token1Icon="/icons/strk.webp"
+            token2Icon="/icons/eth.svg"
+          />
+          <DefiOpportunityCardComponent
+            tokenPair="USDC-DAI"
+            type="Liquidity Pool"
+            apr={43.47}
+            tvl={2.14}
+            dailyRewards={246}
+            protocol={{
+              name: "Sithswap",
+              icon: "/icons/sith.png",
+            }}
+            token1Icon="/icons/usdc.svg"
+            token2Icon="/icons/dai.svg"
+          />
+          <DefiOpportunityCardComponent
+            tokenPair="STRK Staking"
+            type="Staking"
+            apr={10}
+            tvl={3.0}
+            dailyRewards={14}
+            protocol={{
+              name: "Nostra Finance",
+              icon: "/icons/nostra-finance.svg",
+            }}
+            token1Icon="/icons/strk.webp"
+            token2Icon=""
+          />
         </div>
 
         <div className="rounded-xl border-[1px] border-[#f4faff4d] min-w-[930px] xl:w-full">
