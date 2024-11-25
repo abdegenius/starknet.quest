@@ -26,10 +26,7 @@ export const formatNumber = (
   num: number,
   options: Intl.NumberFormatOptions
 ): string => {
-  let value = num;
-  if (options?.style == "percent") {
-    value = num / 100;
-  }
+  let value = options?.style == "percent" ? num / 100 : num;
   const formatter = new Intl.NumberFormat("en-US", options);
   return formatter.format(value);
 };
