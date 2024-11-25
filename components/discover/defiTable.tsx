@@ -313,6 +313,15 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
     table.resetColumnFilters();
   }, [table]);
 
+  const filteredData = table.getRowModel().rows.map((row) => row.original);
+  const topThreeOpportunities = filteredData
+    .sort((a, b) => b.apr - a.apr)
+    .slice(0, 3);
+
+  const getTokenIcon = (token: string): string => {
+    if (!token) return "";
+    return `/icons/${token.toLowerCase()}.svg`;
+  };
   return (
     <div className="w-full overflow-x-auto">
       <div className="">
@@ -414,46 +423,23 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
           </div>
         </div>
 
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch py-16">
-          <DefiOpportunityCardComponent
-            tokenPair="STRK-ETH"
-            type="Liquidity Pool"
-            apr={69.49}
-            tvl={1.62}
-            dailyRewards={330}
-            protocol={{
-              name: "Ekubo",
-              icon: "/icons/ekubo.svg",
-            }}
-            token1Icon="/icons/strk.webp"
-            token2Icon="/icons/eth.svg"
-          />
-          <DefiOpportunityCardComponent
-            tokenPair="USDC-DAI"
-            type="Liquidity Pool"
-            apr={43.47}
-            tvl={2.14}
-            dailyRewards={246}
-            protocol={{
-              name: "Sithswap",
-              icon: "/icons/sith.png",
-            }}
-            token1Icon="/icons/usdc.svg"
-            token2Icon="/icons/dai.svg"
-          />
-          <DefiOpportunityCardComponent
-            tokenPair="STRK Staking"
-            type="Staking"
-            apr={10}
-            tvl={3.0}
-            dailyRewards={14}
-            protocol={{
-              name: "Nostra Finance",
-              icon: "/icons/nostra-finance.svg",
-            }}
-            token1Icon="/icons/strk.webp"
-            token2Icon=""
-          />
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 items-stretch py-12">
+          {topThreeOpportunities.map((opportunity, index) => (
+            <DefiOpportunityCardComponent
+              key={index}
+              tokenPair={opportunity.title}
+              type={opportunity.action}
+              apr={opportunity.apr}
+              tvl={opportunity.volume}
+              dailyRewards={opportunity.daily_rewards}
+              protocol={{
+                name: opportunity.app,
+                icon: `/icons/${opportunity.app.toLowerCase()}.svg`, // Adjust the path as needed
+              }}
+              token1Icon={getTokenIcon(opportunity.title.split("/")[0])}
+              token2Icon={getTokenIcon(opportunity.title.split("/")[1] ?? "")}
+            />
+          ))}
         </div>
 
         <div className="rounded-xl border-[1px] border-[#f4faff4d] min-w-[930px] xl:w-full">
