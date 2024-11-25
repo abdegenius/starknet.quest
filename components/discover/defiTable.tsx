@@ -314,6 +314,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   }, [table]);
 
   const filteredData = table.getRowModel().rows.map((row) => row.original);
+
   const topThreeOpportunities = filteredData
     .sort((a, b) => b.apr - a.apr)
     .slice(0, 3);
@@ -321,6 +322,29 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   const getTokenIcon = (token: string): string => {
     if (!token) return "";
     return `/icons/${token.toLowerCase()}.svg`;
+  };
+
+  const getProtocolIcon = (token: string): string => {
+    if (!token) return "";
+    return `/${token.toLowerCase()}/favicon.ico`;
+  };
+
+  const parseTokenPair = (title: string) => {
+    const delimiters = ["/", "|", "-", " ", "_"];
+    let first = "",
+      second = "";
+    for (const delimiter of delimiters) {
+      if (title.includes(delimiter)) {
+        [first, second] = title.split(delimiter);
+        break;
+      } else {
+        [first, second] = [title, ""];
+      }
+    }
+    return {
+      first: first.trim(),
+      second: second?.trim() ?? "",
+    };
   };
   return (
     <div className="w-full overflow-x-auto">
@@ -422,25 +446,32 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
             </div>
           </div>
         </div>
-
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 items-stretch py-12">
-          {topThreeOpportunities.map((opportunity, index) => (
-            <DefiOpportunityCardComponent
-              key={index}
-              tokenPair={opportunity.title}
-              type={opportunity.action}
-              apr={opportunity.apr}
-              tvl={opportunity.volume}
-              dailyRewards={opportunity.daily_rewards}
-              protocol={{
-                name: opportunity.app,
-                icon: `/icons/${opportunity.app.toLowerCase()}.svg`, // Adjust the path as needed
-              }}
-              token1Icon={getTokenIcon(opportunity.title.split("/")[0])}
-              token2Icon={getTokenIcon(opportunity.title.split("/")[1] ?? "")}
-            />
-          ))}
-        </div>
+        {topThreeOpportunities.length > 0 ? (
+          <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 items-stretch py-12">
+            {topThreeOpportunities.map((opportunity, index) => (
+              <DefiOpportunityCardComponent
+                key={index}
+                tokenPair={opportunity.title}
+                type={opportunity.action}
+                apr={opportunity.apr}
+                tvl={opportunity.volume}
+                dailyRewards={opportunity.daily_rewards}
+                protocol={{
+                  name: opportunity.app,
+                  icon: getProtocolIcon(parseTokenPair(opportunity.app).first),
+                }}
+                token1Icon={getTokenIcon(
+                  parseTokenPair(opportunity.title).first
+                )}
+                token2Icon={getTokenIcon(
+                  parseTokenPair(opportunity.title).second
+                )}
+              />
+            ))}
+          </div>
+        ) : (
+          ""
+        )}
 
         <div className="rounded-xl border-[1px] border-[#f4faff4d] min-w-[930px] xl:w-full">
           <Table>

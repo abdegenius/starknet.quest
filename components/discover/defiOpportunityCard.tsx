@@ -22,17 +22,17 @@ interface PoolCardProps {
 }
 
 export default function DefiOpportunityCardComponent({
-  tokenPair = "STRK-ETH",
-  type = "Liquidity Pool",
-  apr = 0,
-  tvl = 0,
-  dailyRewards = 0,
+  tokenPair,
+  type,
+  apr,
+  tvl,
+  dailyRewards,
   protocol = {
-    name: "Ekubo",
-    icon: "/protocol-icon.svg",
+    name: "",
+    icon: "",
   },
-  token1Icon = "/strk-icon.svg",
-  token2Icon = "/eth-icon.svg",
+  token1Icon,
+  token2Icon,
 }: PoolCardProps) {
   return (
     <div className="w-full bg-[#1F1F25] py-4 rounded-lg mt-6 lg:mt-0 _border _box-shadow">
@@ -47,7 +47,7 @@ export default function DefiOpportunityCardComponent({
         </div>
         <div className="flex-none flex -space-x-2 -mt-10">
           {token1Icon ? (
-            <div className="w-[48px] h-[48px] sm:w-[56px] sm:h-[56px] md:w-[48px] md:h-[48px] xl:w-[60px] xl:h-[60px] rounded-full overflow-hidden flex flex-none">
+            <div className="w-[48px] h-[48px] bg-red-400 sm:w-[56px] sm:h-[56px] md:w-[48px] md:h-[48px] xl:w-[60px] xl:h-[60px] rounded-full overflow-hidden">
               <img
                 src={token1Icon}
                 alt="Token 1"
@@ -58,7 +58,7 @@ export default function DefiOpportunityCardComponent({
             ""
           )}
           {token2Icon ? (
-            <div className="w-[48px] h-[48px] sm:w-[56px] sm:h-[56px] md:w-[48px] md:h-[48px] xl:w-[60px] xl:h-[60px] rounded-full overflow-hidden flex flex-none">
+            <div className="w-[48px] h-[48px] sm:w-[56px] sm:h-[56px] md:w-[48px] md:h-[48px] xl:w-[60px] xl:h-[60px] rounded-full overflow-hidden">
               <img
                 src={token2Icon}
                 alt="Token 2"
