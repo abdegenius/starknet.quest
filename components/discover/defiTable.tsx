@@ -32,7 +32,7 @@ import AppIcon from "./appIcon";
 import ActionText from "./actionText";
 import DownIcon from "@components/UI/iconsComponents/icons/downIcon";
 import UpIcon from "@components/UI/iconsComponents/icons/upIcon";
-import { getRedirectLink } from "@utils/defi";
+import { getProtocolIcon, getRedirectLink, getTokenIcon, parseTokenPair } from "@utils/defi";
 import DefiTableSkeleton from "./defiTableSkeleton";
 import ClaimModal from "./claimModal";
 import SuccessModal from "./successModal";
@@ -319,33 +319,6 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
     .sort((a, b) => b.apr - a.apr)
     .slice(0, 3);
 
-  const getTokenIcon = (token: string): string => {
-    if (!token) return "";
-    return `/icons/${token.toLowerCase()}.svg`;
-  };
-
-  const getProtocolIcon = (token: string): string => {
-    if (!token) return "";
-    return `/${token.toLowerCase()}/favicon.ico`;
-  };
-
-  const parseTokenPair = (title: string) => {
-    const delimiters = ["/", "|", "-", " ", "_"];
-    let first = "",
-      second = "";
-    for (const delimiter of delimiters) {
-      if (title.includes(delimiter)) {
-        [first, second] = title.split(delimiter);
-        break;
-      } else {
-        [first, second] = [title, ""];
-      }
-    }
-    return {
-      first: first.trim(),
-      second: second?.trim() ?? "",
-    };
-  };
   return (
     <div className="w-full overflow-x-auto">
       <div className="">
@@ -469,9 +442,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
               />
             ))}
           </div>
-        ) : (
-          ""
-        )}
+        ) : null}
 
         <div className="rounded-xl border-[1px] border-[#f4faff4d] min-w-[930px] xl:w-full">
           <Table>

@@ -133,3 +133,35 @@ export const formatStatsData = (
 
   return res;
 };
+
+export const getTokenIcon = (token: string): string => {
+  if (!token) return "";
+  return `/icons/${token.toLowerCase()}.svg`;
+};
+
+export const getProtocolIcon = (token: string): string => {
+  if (!token) return "";
+  return `/${token.toLowerCase()}/favicon.ico`;
+};
+
+export const parseTokenPair = (title: string) => {
+  if (!title) return { first: "", second: "" };
+
+  const delimiters = ["/", "|", "-", " ", "_"];
+
+  if (title.toLowerCase().includes("staking")) {
+    const token = title.toLowerCase().replace("staking", "").trim();
+    return { first: token, second: "" };
+  }
+
+  for (const delimiter of delimiters) {
+    if (title.includes(delimiter)) {
+      const [first, second] = title.split(delimiter);
+      return {
+        first: first.trim(),
+        second: second?.trim() ?? "",
+      };
+    }
+  }
+  return { first: title.trim(), second: "" };
+};
