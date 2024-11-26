@@ -32,7 +32,12 @@ import AppIcon from "./appIcon";
 import ActionText from "./actionText";
 import DownIcon from "@components/UI/iconsComponents/icons/downIcon";
 import UpIcon from "@components/UI/iconsComponents/icons/upIcon";
-import { getProtocolIcon, getRedirectLink, getTokenIcon, parseTokenPair } from "@utils/defi";
+import {
+  getProtocolIcon,
+  getRedirectLink,
+  getTokenIcon,
+  parseTokenPair,
+} from "@utils/defi";
 import DefiTableSkeleton from "./defiTableSkeleton";
 import ClaimModal from "./claimModal";
 import SuccessModal from "./successModal";
@@ -316,7 +321,14 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   const filteredData = table.getRowModel().rows.map((row) => row.original);
 
   const topThreeOpportunities = filteredData
-    .sort((a, b) => b.apr - a.apr)
+    .sort((a, b) => {
+      const aprA = Number(a.apr);
+      const aprB = Number(b.apr);
+      if (aprB !== aprA) {
+        return aprB - aprA;
+      }
+      return Number(b.volume) - Number(a.volume);
+    })
     .slice(0, 3);
 
   return (
