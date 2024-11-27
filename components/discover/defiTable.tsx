@@ -34,6 +34,7 @@ import DownIcon from "@components/UI/iconsComponents/icons/downIcon";
 import UpIcon from "@components/UI/iconsComponents/icons/upIcon";
 import {
   getProtocolIcon,
+  getProtocolName,
   getRedirectLink,
   getTokenIcon,
   parseTokenPair,
@@ -433,9 +434,9 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
         </div>
         {topThreeOpportunities.length > 0 ? (
           <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 items-stretch py-12">
-            {topThreeOpportunities.map((opportunity, index) => (
+            {topThreeOpportunities.map((opportunity) => (
               <DefiOpportunityCardComponent
-                key={index}
+                key={`${opportunity.app}-${opportunity.title}-${opportunity.action}`}
                 tokenPair={opportunity.title}
                 type={opportunity.action}
                 apr={opportunity.apr}
@@ -443,7 +444,7 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                 dailyRewards={opportunity.daily_rewards}
                 protocol={{
                   name: opportunity.app,
-                  icon: getProtocolIcon(parseTokenPair(opportunity.app).first),
+                  icon: getProtocolIcon(getProtocolName(opportunity.app.toLowerCase())),
                 }}
                 token1Icon={getTokenIcon(
                   parseTokenPair(opportunity.title).first
@@ -454,7 +455,13 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
               />
             ))}
           </div>
-        ) : null}
+        ) : (
+          <div className="w-full text-center py-12">
+            <Typography type={TEXT_TYPE.BODY_DEFAULT} color="textGray">
+              No opportunities available with current filters
+            </Typography>
+          </div>
+        )}
 
         <div className="rounded-xl border-[1px] border-[#f4faff4d] min-w-[930px] xl:w-full">
           <Table>

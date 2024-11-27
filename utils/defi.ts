@@ -144,6 +144,18 @@ export const getProtocolIcon = (token: string): string => {
   return `/${token.toLowerCase()}/favicon.ico`;
 };
 
+export const getProtocolName = (title: string): string => {
+  const delimiters = ["/", "|", "-", " ", "_"];
+
+  for (const delimiter of delimiters) {
+    if (title.includes(delimiter)) {
+      const titleArray = title.split(delimiter);
+      return titleArray[0].trim();
+    }
+  }
+  return title.trim();
+};
+
 export const parseTokenPair = (title: string) => {
   if (!title) return { first: "", second: "" };
 
