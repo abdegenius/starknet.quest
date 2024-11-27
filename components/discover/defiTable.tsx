@@ -320,15 +320,14 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   }, [table]);
 
   const filteredData = table.getRowModel().rows.map((row) => row.original);
-
   const topThreeOpportunities = filteredData
     .sort((a, b) => {
-      const aprA = Number(a.apr);
-      const aprB = Number(b.apr);
+      const aprA = parseFloat(a.apr) || 0;
+      const aprB = parseFloat(b.apr) || 0;
       if (aprB !== aprA) {
         return aprB - aprA;
       }
-      return Number(b.volume) - Number(a.volume);
+      return (parseFloat(b.volume) || 0) - (parseFloat(a.volume) || 0);
     })
     .slice(0, 3);
 
@@ -444,7 +443,9 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                 dailyRewards={opportunity.daily_rewards}
                 protocol={{
                   name: opportunity.app,
-                  icon: getProtocolIcon(getProtocolName(opportunity.app.toLowerCase())),
+                  icon: getProtocolIcon(
+                    getProtocolName(opportunity.app.toLowerCase())
+                  ),
                 }}
                 token1Icon={getTokenIcon(
                   parseTokenPair(opportunity.title).first

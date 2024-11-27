@@ -134,6 +134,23 @@ export const formatStatsData = (
   return res;
 };
 
+export const splitTitle = (title: string) => {
+  const delimiters = ["/", "|", "-", " ", "_"];
+  for (const delimiter of delimiters) {
+    if (title.includes(delimiter)) {
+      const [first, second] = title.split(delimiter);
+      return {
+        first: first.trim(),
+        second: second?.trim() ?? "",
+      };
+    }
+  }
+  return {
+    first: title.trim(),
+    second: "",
+  };
+};
+
 export const getTokenIcon = (token: string): string => {
   if (!token) return "";
   return `/icons/${token.toLowerCase()}.svg`;
@@ -145,35 +162,16 @@ export const getProtocolIcon = (token: string): string => {
 };
 
 export const getProtocolName = (title: string): string => {
-  const delimiters = ["/", "|", "-", " ", "_"];
-
-  for (const delimiter of delimiters) {
-    if (title.includes(delimiter)) {
-      const titleArray = title.split(delimiter);
-      return titleArray[0].trim();
-    }
-  }
-  return title.trim();
+  const titleObj = splitTitle(title);
+  return titleObj.first;
 };
 
 export const parseTokenPair = (title: string) => {
   if (!title) return { first: "", second: "" };
 
-  const delimiters = ["/", "|", "-", " ", "_"];
-
   if (title.toLowerCase().includes("staking")) {
     const token = title.toLowerCase().replace("staking", "").trim();
     return { first: token, second: "" };
   }
-
-  for (const delimiter of delimiters) {
-    if (title.includes(delimiter)) {
-      const [first, second] = title.split(delimiter);
-      return {
-        first: first.trim(),
-        second: second?.trim() ?? "",
-      };
-    }
-  }
-  return { first: title.trim(), second: "" };
+  return splitTitle(title);
 };
