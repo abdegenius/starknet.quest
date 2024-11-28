@@ -322,12 +322,12 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
   const filteredData = table.getRowModel().rows.map((row) => row.original);
   const topThreeOpportunities = filteredData
     .sort((a, b) => {
-      const aprA = parseFloat(a.apr) || 0;
-      const aprB = parseFloat(b.apr) || 0;
+      const aprA = parseFloat(String(a.apr)) || 0;
+      const aprB = parseFloat(String(b.apr)) || 0;
       if (aprB !== aprA) {
         return aprB - aprA;
       }
-      return (parseFloat(b.volume) || 0) - (parseFloat(a.volume) || 0);
+      return (parseFloat(String(b.volume)) || 0) - (parseFloat(String(a.volume)) || 0);
     })
     .slice(0, 3);
 
