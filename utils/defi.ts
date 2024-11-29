@@ -171,10 +171,12 @@ export const getProtocolName = (title: string): string => {
 
 export const parseTokenPair = (title: string) => {
   if (!title) return { first: "", second: "" };
-
-  if (title.toLowerCase().includes("staking")) {
-    const token = title.toLowerCase().replace("staking", "").trim();
+  const normalizedTitle = title.trim();
+  if (!normalizedTitle) return { first: "", second: "" };
+  const normalizedTitleLower = normalizedTitle.toLowerCase();
+  if (normalizedTitleLower.includes("staking")) {
+    const token = normalizedTitleLower.replace(/\bstaking\b/gi, "").trim();
     return { first: token, second: "" };
   }
-  return splitTitle(title);
+  return splitTitle(normalizedTitle);
 };
