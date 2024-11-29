@@ -153,15 +153,8 @@ export const splitTitle = (title: string) => {
 
 export const getTokenIcon = (token: string): string => {
   if (!token) return "";
-  const tokenIconMap: { [key: string]: string } = {
-    USDC: "/icons/usdc.svg",
-    ETH: "/icons/eth.svg",
-    LORDS: "/icons/lords.webp",
-    SITH: "/icons/sith.png",
-    STRK: "/icons/strk.webp",
-  };
-  const upperToken = token.toUpperCase();
-  return tokenIconMap[upperToken] || "/icons/usdc.svg";
+  token = token.includes("btc") ? "btc" : token;
+  return `/tokens/${token.toLowerCase()}.svg`;
 };
 
 export const getProtocolIcon = (token: string): string => {

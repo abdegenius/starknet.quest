@@ -448,10 +448,10 @@ const DataTable: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                   ),
                 }}
                 token1Icon={getTokenIcon(
-                  parseTokenPair(opportunity.title).first
+                  parseTokenPair(opportunity.title.toLowerCase()).first
                 )}
                 token2Icon={getTokenIcon(
-                  parseTokenPair(opportunity.title).second
+                  parseTokenPair(opportunity.title.toLowerCase()).second
                 )}
               />
             ))}
