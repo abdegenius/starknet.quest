@@ -51,6 +51,8 @@ const linkMap: { [key: string]: { [key: string]: string } } = {
   },
 };
 
+const DEFAULT_PROTOCOL_ICON = "/icons/unknown-protocol.svg";
+
 export const getRedirectLink = (appName: string, actionType: string) => {
   if (appName.toLocaleLowerCase().includes("jediswap")) {
     if (actionType === "Provide Liquidity")
@@ -159,7 +161,14 @@ export const getTokenIcon = (token: string): string => {
 
 export const getProtocolIcon = (token: string): string => {
   if (!token) return "";
-  return `/${token.toLowerCase()}/favicon.ico`;
+  const normalizedToken = token.toLowerCase().trim();
+  if (!normalizedToken) return DEFAULT_PROTOCOL_ICON;
+
+  try {
+    return `/${normalizedToken}/favicon.ico`;
+  } catch {
+    return DEFAULT_PROTOCOL_ICON;
+  }
 };
 
 export const getProtocolName = (title: string): string => {
